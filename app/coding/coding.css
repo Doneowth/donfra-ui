@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+.coding-root {
+  min-height: 100vh;
+  background: radial-gradient(1000px 600px at 30% 20%, rgba(18,60,42,0.55) 0%, rgba(18,60,42,0) 60%), #0B0C0C;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #E9E9E7;
+  font-family: 'Share Tech Mono', monospace;
+  padding: 80px 20px;
+}
+
+.editor-panel {
+  width: 90%;
+  max-width: 960px;
+  background: rgba(12,18,15,0.8);
+  border: 1px solid rgba(169,142,100,0.3);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  padding: 40px;
+}
+
+.title {
+  font-size: 36px;
+  color: #D0B273;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #A98E64;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.editor-container {
+  background: rgba(5,8,7,0.8);
+  border: 1px solid rgba(169,142,100,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.cm-editor {
+  font-size: 15px;
+  font-family: 'Share Tech Mono', monospace;
+  color: #E9E9E7;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.btn-elegant {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(169,142,100,0.22), rgba(169,142,100,0.12));
+  border: 1px solid rgba(169,142,100,0.45);
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: #E9E9E7;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.btn-elegant:hover {
+  background: linear-gradient(180deg, rgba(169,142,100,0.3), rgba(169,142,100,0.18));
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(169,142,100,0.3);
+  color: #E9E9E7;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.2s ease;
+}
+.btn-ghost:hover {
+  border-color: rgba(169,142,100,0.6);
+  transform: translateY(-1px);
+}

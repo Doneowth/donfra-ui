@@ -125,7 +125,7 @@ export default function Home() {
           </div>
           <div className="contact-card">
             <div className="qr-box">
-              <img src="/wechat-qr.png" alt="WeChat QR" />
+              <img src="/wechat-qr.jpg" alt="WeChat QR" />
             </div>
             <p className="small">WeChat</p>
           </div>

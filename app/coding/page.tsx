@@ -1,10 +1,10 @@
 "use client";
 
-import "@/components/codepad.css"; // ← 使用单独 CSS（见下）
+import "@/styles/codepad.css";   // ← 独立 CSS
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
-import CodePad from "@/components/codepad";
+import CodePad from "@/components/CodePad";
 
 type Phase = "loading" | "lobby" | "pad";
 
@@ -30,18 +30,11 @@ export default function CodingPage() {
         if (inviteToken) {
           setBusy(true);
           await api.room.join(inviteToken);
-          if (!cancelled) {
-            setPhase("pad");
-            setBusy(false);
-            return;
-          }
+          if (!cancelled) { setPhase("pad"); setBusy(false); return; }
         }
         const cookie = getCookie("room_access");
         const st = await api.room.status();
-        if (!cancelled) {
-          if (cookie === "1" || st.open) setPhase("pad");
-          else setPhase("lobby");
-        }
+        if (!cancelled) setPhase(cookie === "1" || st.open ? "pad" : "lobby");
       } catch {
         if (!cancelled) setPhase("lobby");
       } finally {
@@ -54,10 +47,8 @@ export default function CodingPage() {
 
   const copyInvite = async () => {
     if (!inviteUrl) return;
-    try {
-      await navigator.clipboard.writeText(new URL(inviteUrl, window.location.origin).toString());
-      setHint("Invite URL copied."); setTimeout(() => setHint(""), 1500);
-    } catch { setHint("Copy failed."); setTimeout(() => setHint(""), 1500); }
+    await navigator.clipboard.writeText(new URL(inviteUrl, window.location.origin).toString());
+    setHint("Invite URL copied."); setTimeout(() => setHint(""), 1500);
   };
 
   const initRoom = async () => {

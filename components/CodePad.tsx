@@ -3,6 +3,9 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { api } from "@/lib/api";
+import type { editor as MonacoEditor } from "monaco-editor";
+
+
 
 // 动态加载 Monaco（禁 SSR）
 const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false }) as any;
@@ -30,7 +33,7 @@ export default function CodePad({ onExit }: Props) {
   const userNameRef = useRef<string>("");
 
   // Monaco + Yjs refs
-  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const editorRef = useRef<MonacoEditor.IStandaloneCodeEditor | null>(null);
   const bindingRef = useRef<any>(null);
   const providerRef = useRef<any>(null);
   const ydocRef = useRef<any>(null);
@@ -140,7 +143,7 @@ export default function CodePad({ onExit }: Props) {
   };
 
   // Monaco onMount：绑定 Yjs + Awareness
-  const onMount = useCallback(async (editor: monaco.editor.IStandaloneCodeEditor, monacoNS: any) => {
+  const onMount = useCallback(async (editor: MonacoEditor.IStandaloneCodeEditor, monacoNS: any) => {
     editorRef.current = editor;
 
     // 快捷键

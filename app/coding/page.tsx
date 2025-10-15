@@ -1,8 +1,7 @@
 "use client";
 
 import "@/styles/codepad.css";   // ← standalone CSS
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import CodePad from "@/components/CodePad";
 
@@ -15,14 +14,23 @@ function getCookie(name: string) {
 }
 
 export default function CodingPage() {
-  const query = useSearchParams();
-  const inviteToken = useMemo(() => query.get("invite") || "", [query]);
+  // 改：不用 useSearchParams，避免静态导出报错
+  const [inviteToken, setInviteToken] = useState<string>("");
+
   const [phase, setPhase] = useState<Phase>("loading");
   const [initPass, setInitPass] = useState("");
   const [inviteUrl, setInviteUrl] = useState<string>("");
   const [busy, setBusy] = useState(false);
   const [hint, setHint] = useState<string>("");
 
+  // 仅浏览器：从 URL 解析 invite
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const p = new URLSearchParams(window.location.search);
+    setInviteToken(p.get("invite") || "");
+  }, []);
+
+  // boot 流程：有 invite 就 join；否则根据 cookie/status 判定 lobby/pad
   useEffect(() => {
     let cancelled = false;
     const boot = async () => {
@@ -67,7 +75,13 @@ export default function CodingPage() {
     setPhase("lobby"); setInviteUrl(""); setInitPass("");
   };
 
-  if (phase === "pad") return <div className="coding-page"><CodePad onExit={onExit} /></div>;
+  if (phase === "pad") {
+    return (
+      <div className="coding-page">
+        <CodePad onExit={onExit} />
+      </div>
+    );
+  }
 
   if (phase === "loading") {
     return (
@@ -110,7 +124,9 @@ export default function CodingPage() {
                 <div className="share-line">
                   Invitation link generated:
                   <span className="share-url">
-                    {typeof window !== "undefined" ? new URL(inviteUrl, window.location.origin).toString() : inviteUrl}
+                    {typeof window !== "undefined"
+                      ? new URL(inviteUrl, window.location.origin).toString()
+                      : inviteUrl}
                   </span>
                 </div>
                 <div className="lobby-foot">

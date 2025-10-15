@@ -128,10 +128,14 @@ export default function CodePad({ onExit }: Props) {
     }
   }, []);
 
-  const exit = () => {
-    if (typeof document !== "undefined") {
-      document.cookie = `room_access=; Path=/; Max-Age=0; SameSite=Lax`;
-    }
+  const exit = async () => {
+    try { await api.room.close();} catch {} // 忽略错误
+    // 3) 断开本地协作连接，释放资源
+    try { providerRef.current?.destroy?.(); } catch {}
+    try { bindingRef.current?.destroy?.(); } catch {}
+    try { ydocRef.current?.destroy?.(); } catch {}
+
+    // 4) 回到上层 / 关闭页面（保持你现有逻辑）
     onExit?.();
   };
 
@@ -201,6 +205,7 @@ export default function CodePad({ onExit }: Props) {
 
     // 绑定 Monaco（把 awareness 传入，让 y-monaco 渲染光标/选区/标签）
     const model = editor.getModel();
+    
     if (!model) return;
     const binding = new YMonacoNS!.MonacoBinding(ytext, model, new Set([editor]), awareness);
 
@@ -371,7 +376,7 @@ export default function CodePad({ onExit }: Props) {
           <button className="btn run" onClick={run} disabled={running} title="Run (Ctrl/Cmd+Enter)">
             {running ? "Running…" : "Run"}
           </button>
-          <button className="btn danger" onClick={onExit}>Exit</button>
+          <button className="btn danger" onClick={exit}>Exit</button>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import "@/styles/codepad.css";   // ← 独立 CSS
+import "@/styles/codepad.css";   // ← standalone CSS
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
@@ -48,17 +48,17 @@ export default function CodingPage() {
   const copyInvite = async () => {
     if (!inviteUrl) return;
     await navigator.clipboard.writeText(new URL(inviteUrl, window.location.origin).toString());
-    setHint("Invite URL copied."); setTimeout(() => setHint(""), 1500);
+    setHint("Invite link copied to clipboard."); setTimeout(() => setHint(""), 1500);
   };
 
   const initRoom = async () => {
-    if (!initPass.trim()) { setHint("请输入口令"); setTimeout(() => setHint(""), 1200); return; }
+    if (!initPass.trim()) { setHint("Passphrase required."); setTimeout(() => setHint(""), 1200); return; }
     try {
       setBusy(true); setHint("");
       const res = await api.room.init(initPass.trim());
       setInviteUrl(res.inviteUrl);
     } catch (e: any) {
-      setHint(e?.message || "初始化失败"); setTimeout(() => setHint(""), 1500);
+      setHint(e?.message || "Initialization failed."); setTimeout(() => setHint(""), 1500);
     } finally { setBusy(false); }
   };
 
@@ -70,7 +70,13 @@ export default function CodingPage() {
   if (phase === "pad") return <div className="coding-page"><CodePad onExit={onExit} /></div>;
 
   if (phase === "loading") {
-    return <div className="coding-page"><div className="lobby-root"><div className="lobby-card">loading…</div></div></div>;
+    return (
+      <div className="coding-page">
+        <div className="lobby-root">
+          <div className="lobby-card">Booting secure console…</div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -79,35 +85,36 @@ export default function CodingPage() {
         <div className="lobby-card">
           <div className="lobby-head">
             <span className="brand">DONFRA</span>
-            <span className="brand-sub">CodePad Lobby</span>
+            <span className="brand-sub">CodePad — Operations Lobby</span>
           </div>
 
           <div className="lobby-section">
-            <div className="section-title">教练初始化（需要口令）</div>
+            <div className="section-title">Handler Briefing (Passphrase Required)</div>
             <div className="row gap-12">
               <input
                 className="input"
-                placeholder="输入教练口令，例如 19930115"
+                type="password"
+                placeholder="Enter passphrase"
                 value={initPass}
                 onChange={(e) => setInitPass(e.currentTarget.value)}
                 onKeyDown={(e) => e.key === "Enter" && initRoom()}
                 disabled={busy}
               />
               <button className="btn-elegant" onClick={initRoom} aria-disabled={busy}>
-                {busy ? "初始化中…" : "初始化房间"}
+                {busy ? "Arming the room…" : "Agent Room"}
               </button>
             </div>
 
             {inviteUrl && (
               <>
                 <div className="share-line">
-                  已生成邀请链接：
+                  Invitation link generated:
                   <span className="share-url">
                     {typeof window !== "undefined" ? new URL(inviteUrl, window.location.origin).toString() : inviteUrl}
                   </span>
                 </div>
                 <div className="lobby-foot">
-                  <button className="btn-ghost" onClick={copyInvite}>复制邀请链接</button>
+                  <button className="btn-ghost" onClick={copyInvite}>Copy invitation link</button>
                 </div>
               </>
             )}

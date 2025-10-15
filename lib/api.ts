@@ -31,6 +31,7 @@ export const api = {
     init: (passcode: string) =>
       postJSON<{ inviteUrl: string }>("/room/init", { passcode }),
     join: (token: string) => postJSON<{ status: string }>("/room/join", { token }),
+    close: () => postJSON<{ open: boolean }>("/room/close", {}),
     status: () => getJSON<{ open: boolean }>("/room/status"),
   },
   run: {

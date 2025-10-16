@@ -4,8 +4,8 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# 先拷贝 lockfile，提升缓存命中
 COPY package.json ./
+COPY .env.production ./
 RUN npm install
 
 # 拷贝源码并构建（Next 14 + output:'export' 会直接生成 out/）

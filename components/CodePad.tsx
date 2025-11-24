@@ -167,9 +167,8 @@ export default function CodePad({ onExit }: Props) {
     // 协作地址/房间
     const params = new URLSearchParams(window.location.search);
     const roomName = params.get("invite") || "default-room";
-    const collabURL =
-      process.env.NEXT_PUBLIC_COLLAB_WS ||
-      `${window.location.protocol === "https:" ? "wss:" : "ws:"}//${window.location.host}/collab`;
+    // Ensure collabURL is a string: prefer env var, otherwise derive a sensible fallback from current origin
+    const collabURL = process.env.NEXT_PUBLIC_COLLAB_WS ?? `${window.location.protocol === "https:" ? "wss" : "ws"}://${window.location.host}/yjs`;
 
     // 创建 Doc / Provider
     const doc = new YNS!.Doc();

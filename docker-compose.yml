@@ -1,0 +1,27 @@
+version: "3.9"
+name: donfra
+
+services:
+  ui:
+    build: .
+    container_name: donfra-ui
+    networks:
+      - donfra
+
+  nginx:
+    image: nginx:alpine
+    container_name: donfra-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - ui
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - donfra
+
+networks:
+  donfra:
+    driver: bridge

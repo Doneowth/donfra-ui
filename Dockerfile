@@ -21,8 +21,8 @@ WORKDIR /usr/share/nginx/html
 # 拷贝静态站点
 COPY --from=build /app/out ./
 
-# 拷贝站点 Nginx 配置（见下方 default.conf）
-COPY default.conf /etc/nginx/conf.d/default.conf
+# 拷贝站点 Nginx 配置（仅用于直接服务静态文件）
+COPY default.ui.conf /etc/nginx/conf.d/default.conf
 
 # 可选：更激进的缓存头（对 hashed 静态资源）
 # 你也可以在 default.conf 里设置 Cache-Control

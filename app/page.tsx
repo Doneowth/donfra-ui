@@ -119,9 +119,9 @@ export default function Home() {
         <div className="contact-row">
           <div className="contact-card">
             <div className="qr-box">
-              <img src="/discord-qr.png" alt="Discord QR" />
+              <img src="/dc-qr.jpg" alt="Discord QR" />
             </div>
-            <p className="small">Discord: @donfra</p>
+            <p className="small">Discord</p>
           </div>
           <div className="contact-card">
             <div className="qr-box">

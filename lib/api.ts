@@ -37,6 +37,6 @@ export const api = {
   },
   run: {
     python: (code: string) =>
-      postJSON<{ stdout: string; stderr: string }>("/run", { code }),
+      postJSON<{ stdout: string; stderr: string }>("/room/run", { code }),
   },
 };

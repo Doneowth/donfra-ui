@@ -4,20 +4,10 @@ services:
   ui:
     build: .
     container_name: donfra-ui
-    networks:
-      - donfra
-
-  nginx:
-    image: nginx:alpine
-    container_name: donfra-nginx
     ports:
-      - "80:80"
-    depends_on:
-      - ui
-    volumes:
-      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+      - "80:80"   # 外面直接访问 http://localhost
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"  # 让 nginx 可以访问宿主机 8080、6789
     networks:
       - donfra
 

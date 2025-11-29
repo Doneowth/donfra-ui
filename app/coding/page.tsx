@@ -55,8 +55,12 @@ export default function CodingPage() {
 
   const copyInvite = async () => {
     if (!inviteUrl) return;
-    await navigator.clipboard.writeText(new URL(inviteUrl, window.location.origin).toString());
-    setHint("Invite link copied to clipboard."); setTimeout(() => setHint(""), 1500);
+    try {
+      await navigator.clipboard.writeText(new URL(inviteUrl, window.location.origin).toString());
+      setHint("Invite link copied to clipboard."); setTimeout(() => setHint(""), 1500);
+    } catch (e: any) {
+      setHint(e?.message || "Failed to copy invite link. Please copy manually."); setTimeout(() => setHint(""), 1500);
+    }
   };
 
   const initRoom = async () => {

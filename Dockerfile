@@ -21,6 +21,10 @@ WORKDIR /usr/share/nginx/html
 # 拷贝静态站点
 COPY --from=build /app/out ./
 
+# 拷贝主 Nginx 配置文件，设置 worker_processes=1 和 worker_connections=16
+# 确保在构建时，本地文件系统中有 nginx.conf 文件
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # 拷贝站点 Nginx 配置（仅用于直接服务静态文件）
 COPY default.ui.conf /etc/nginx/conf.d/default.conf
 
